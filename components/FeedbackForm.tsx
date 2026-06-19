@@ -3,6 +3,67 @@ import { createFeedback } from '../lib/api'
 import { Animal } from '../types'
 import { useRouter } from 'next/router'
 import { mutate } from 'swr'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const FLOWERS = ['🌸', '🌺', '🌼', '🎉', '✨', '💖', '🦋']
+
+function CelebrationOverlay() {
+  const [particles, setParticles] = useState<any[]>([])
+
+  useEffect(() => {
+    setParticles(
+      Array.from({ length: 40 }).map((_, i) => ({
+        id: i,
+        emoji: FLOWERS[Math.floor(Math.random() * FLOWERS.length)],
+        x: Math.random() * 100,
+        delay: Math.random() * 0.5,
+        duration: 2.5 + Math.random() * 2,
+        scale: 0.8 + Math.random() * 1.5,
+      }))
+    )
+  }, [])
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] pointer-events-none flex items-center justify-center overflow-hidden bg-slate-950/60 backdrop-blur-md"
+    >
+      {particles.map(p => (
+        <motion.div
+          key={p.id}
+          initial={{ opacity: 0, y: '100vh', x: `${p.x}vw`, scale: p.scale }}
+          animate={{ 
+            opacity: [0, 1, 1, 0], 
+            y: '-20vh', 
+            x: `${p.x + (Math.random() * 30 - 15)}vw`,
+            rotate: Math.random() * 360
+          }}
+          transition={{ duration: p.duration, delay: p.delay, ease: "easeOut" }}
+          className="absolute text-4xl"
+        >
+          {p.emoji}
+        </motion.div>
+      ))}
+      <motion.div 
+        initial={{ scale: 0.5, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.8, opacity: 0, y: -50 }}
+        transition={{ type: "spring", bounce: 0.5 }}
+        className="bg-slate-900/80 backdrop-blur-2xl border border-white/20 px-12 py-10 rounded-[3rem] shadow-[0_0_60px_rgba(236,72,153,0.3)] text-center relative z-10"
+      >
+        <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 mb-4">
+          Thank you!
+        </h2>
+        <p className="text-slate-300 text-lg md:text-xl font-medium">
+          Your feedback is highly appreciated.
+        </p>
+      </motion.div>
+    </motion.div>
+  )
+}
+import { mutate } from 'swr'
 
 export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
   const [author, setAuthor] = useState('')
@@ -10,6 +71,7 @@ export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
   const [rating, setRating] = useState(5)
   const [message, setMessage] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | undefined>(animal)
   const router = useRouter()
 
@@ -50,10 +112,16 @@ export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
       mutate(['/api/feedback', selectedAnimal?.id])
       mutate(['/api/feedback', undefined])
       
-      // Kama yupo kwenye ukurasa wa /submit, mpeleke kwenye ukurasa wa mnyama
-      if (router.pathname === '/submit') {
-        router.push(selectedAnimal ? `/animal/${selectedAnimal.id}` : '/')
-      }
+      // Onyesha maua na shukrani
+      setShowSuccess(true)
+      setTimeout(() => {
+        setShowSuccess(false)
+        // Kama yupo kwenye ukurasa wa /submit, mpeleke kwenye ukurasa wa mnyama baada ya maua
+        if (router.pathname === '/submit') {
+          router.push(selectedAnimal ? `/animal/${selectedAnimal.id}` : '/')
+        }
+      }, 3500)
+      
     } catch {
       alert('Failed to submit. Please try again.')
     } finally {
@@ -62,7 +130,12 @@ export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <>
+      <AnimatePresence>
+        {showSuccess && <CelebrationOverlay />}
+      </AnimatePresence>
+
+      <form onSubmit={handleSubmit} className="space-y-4 relative">
       {selectedAnimal && (
         <div className="rounded-[2rem] border border-white/10 bg-slate-900/40 backdrop-blur-md p-6 shadow-2xl">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -108,5 +181,6 @@ export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
         <button type="button" onClick={() => { setAuthor(''); setSpecies(selectedAnimal?.name ?? ''); setRating(5); setMessage('')}} className="px-6 py-3 rounded-full border border-white/10 text-slate-300 hover:bg-white/10 hover:text-white transition">Reset</button>
       </div>
     </form>
+    </>
   )
 }
