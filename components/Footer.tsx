@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer className="bg-white border-t mt-8">
-      <div className="container py-4 text-sm text-gray-500">© {new Date().getFullYear()} Animal Feedback</div>
+    <footer className="border-t border-white/10 bg-slate-950/50 backdrop-blur-md mt-auto">
+      <div className="container py-6 text-sm text-slate-500 text-center">© {new Date().getFullYear()} Animal Feedback. All rights reserved.</div>
     </footer>
   )
 }

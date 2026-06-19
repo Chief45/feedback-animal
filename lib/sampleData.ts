@@ -9,7 +9,7 @@ export const sampleFeedback: Feedback[] = [
     species: 'African Elephant',
     rating: 5,
     message: 'Beautiful animal and very calm while being observed.',
-    images: ['https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80'],
+
     createdAt: new Date().toISOString(),
   },
   {
@@ -20,7 +20,7 @@ export const sampleFeedback: Feedback[] = [
     species: 'Red Fox',
     rating: 4,
     message: 'Quick and alert, a great example of a wild fox sighting.',
-    images: ['https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80'],
+
     createdAt: new Date().toISOString(),
   },
   {
@@ -31,7 +31,7 @@ export const sampleFeedback: Feedback[] = [
     species: 'Giraffe',
     rating: 5,
     message: 'Tall and graceful, a much-loved sight in the reserve.',
-    images: ['https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80'],
+
     createdAt: new Date().toISOString(),
   },
 ]

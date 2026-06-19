@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
 import useSWR from 'swr'
 import { animals as initialAnimals } from '../lib/animals'
 import { Animal } from '../types'
@@ -22,27 +23,37 @@ export default function HomeGallery() {
 
   return (
     <section className="space-y-6 mb-10">
-      <div className="rounded-3xl bg-white p-8 shadow-sm border">
-        <h2 className="text-2xl font-semibold mb-3">Real animals, real feedback</h2>
-        <p className="text-gray-600 max-w-2xl">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="rounded-[2.5rem] bg-slate-900/40 backdrop-blur-xl p-8 shadow-2xl border border-white/10"
+      >
+        <h2 className="text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-purple-300">Real animals, real feedback</h2>
+        <p className="text-slate-300 max-w-2xl text-lg">
           Browse an inspiring gallery of wildlife and click any animal to add feedback about that species.
-          Each card leads directly to a focused review experience for the chosen animal.
+          Each card leads directly to a focused review experience.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]"
+      >
+        <div className="rounded-[2rem] border border-white/10 bg-slate-900/40 backdrop-blur-xl p-5 shadow-2xl">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search species or habitat"
-              className="col-span-2 rounded-2xl border border-slate-200 px-4 py-3 shadow-sm focus:border-indigo-500 focus:outline-none"
+              className="col-span-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-slate-100 placeholder-slate-400 shadow-inner focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition"
             />
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="rounded-2xl border border-slate-200 px-4 py-3 shadow-sm focus:border-indigo-500 focus:outline-none"
+              className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-slate-100 shadow-inner focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition appearance-none"
             >
               {categories.map((item) => (
                 <option key={item} value={item}>{item}</option>
@@ -50,28 +61,45 @@ export default function HomeGallery() {
             </select>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={{
+          visible: { transition: { staggerChildren: 0.1 } },
+          hidden: {}
+        }}
+        className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+      >
         {filtered.map((animal) => (
-          <Link key={animal.id} href={`/animal/${animal.id}`} className="group block overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-            <div className="relative h-64 overflow-hidden bg-slate-100">
-              <img src={animal.imageUrl} alt={animal.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent px-4 pb-4 pt-10 text-white">
-                <p className="text-sm uppercase tracking-[0.2em] text-indigo-200">{animal.category}</p>
-                <h3 className="text-xl font-semibold">{animal.name}</h3>
+          <motion.div 
+            key={animal.id}
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0 }
+            }}
+          >
+            <Link href={`/animal/${animal.id}`} className="group block overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/40 backdrop-blur-xl shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(79,70,229,0.3)] hover:border-indigo-500/50">
+              <div className="relative h-64 overflow-hidden bg-slate-800">
+                <img src={animal.imageUrl} alt={animal.name} className="h-full w-full object-cover transition duration-700 group-hover:scale-110" />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent px-5 pb-5 pt-12 text-white opacity-90 transition duration-500 group-hover:opacity-100">
+                  <p className="text-xs uppercase tracking-[0.2em] text-indigo-300 font-bold mb-1">{animal.category}</p>
+                  <h3 className="text-2xl font-bold">{animal.name}</h3>
+                </div>
               </div>
-            </div>
-            <div className="p-5">
-              <p className="text-gray-600">{animal.description}</p>
-              <div className="mt-5 flex items-center justify-between text-sm text-slate-500">
-                <span>{animal.habitat}</span>
-                <span className="rounded-full bg-indigo-100 px-3 py-1 text-indigo-700">Give feedback</span>
+              <div className="p-6">
+                <p className="text-slate-300 line-clamp-2">{animal.description}</p>
+                <div className="mt-6 flex items-center justify-between text-sm text-slate-400">
+                  <span className="font-medium">{animal.habitat}</span>
+                  <span className="rounded-full bg-indigo-500/20 px-4 py-1.5 text-indigo-300 font-semibold transition group-hover:bg-indigo-500 group-hover:text-white">Give feedback</span>
+                </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   )
 }

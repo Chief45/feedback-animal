@@ -1,12 +1,17 @@
 import FeedbackForm from '../components/FeedbackForm'
+import { motion } from 'framer-motion'
 
 export default function SubmitPage() {
   return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-4">Submit Animal Feedback</h1>
-      <div className="bg-white rounded shadow p-6">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-3xl mx-auto"
+    >
+      <h1 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">Submit Animal Feedback</h1>
+      <div className="bg-slate-900/40 backdrop-blur-xl border border-white/10 rounded-[2rem] shadow-2xl p-8">
         <FeedbackForm />
       </div>
-    </div>
+    </motion.div>
   )
 }
