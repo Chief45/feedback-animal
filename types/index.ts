@@ -7,7 +7,6 @@ export type Feedback = {
   species: string
   rating: number
   message: string
-  images: string[]
   createdAt: string
 }
 

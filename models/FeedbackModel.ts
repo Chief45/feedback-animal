@@ -7,7 +7,6 @@ export interface IFeedback extends Document {
   species: string
   rating: number
   message: string
-  images: string[]
   createdAt: Date
 }
 
@@ -18,7 +17,6 @@ const FeedbackSchema = new Schema<IFeedback>({
   species: { type: String, required: true },
   rating: { type: Number, required: true },
   message: { type: String },
-  images: { type: [String], default: [] },
   createdAt: { type: Date, default: () => new Date() },
 })
 

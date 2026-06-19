@@ -8,7 +8,6 @@ export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
   const [species, setSpecies] = useState(animal?.name ?? '')
   const [rating, setRating] = useState(5)
   const [message, setMessage] = useState('')
-  const [imagePreviews, setImagePreviews] = useState<string[]>([])
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | undefined>(animal)
   const router = useRouter()
 
@@ -26,21 +25,6 @@ export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
     loadAnimal()
   }, [router.query.animalId, selectedAnimal])
 
-  async function handleFiles(files: FileList | null) {
-    if (!files) return
-    const previews: string[] = []
-    for (const file of Array.from(files)) {
-      const dataUrl = await new Promise<string>((res, rej) => {
-        const fr = new FileReader()
-        fr.onload = () => res(String(fr.result))
-        fr.onerror = rej
-        fr.readAsDataURL(file)
-      })
-      previews.push(dataUrl)
-    }
-    setImagePreviews((p) => [...p, ...previews])
-  }
-
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     createFeedback({
@@ -50,7 +34,6 @@ export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
       species: species || 'Unknown',
       rating,
       message,
-      images: imagePreviews,
     }).then(() => router.push(selectedAnimal ? `/animal/${selectedAnimal.id}` : '/'))
       .catch(() => alert('Failed to submit. Please try again.'))
   }
@@ -91,22 +74,9 @@ export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
         <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={4} className="mt-1 block w-full rounded border px-3 py-2" />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Attach images</label>
-        <input type="file" accept="image/*" multiple onChange={(e) => handleFiles(e.target.files)} className="mt-2" />
-
-        {imagePreviews.length > 0 && (
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            {imagePreviews.map((src, i) => (
-              <img key={i} src={src} className="w-full h-24 object-cover rounded" alt={`preview-${i}`} />
-            ))}
-          </div>
-        )}
-      </div>
-
       <div className="flex items-center space-x-2">
         <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded">Submit</button>
-        <button type="button" onClick={() => { setAuthor(''); setSpecies(''); setRating(5); setMessage(''); setImagePreviews([])}} className="px-3 py-2 rounded border">Reset</button>
+        <button type="button" onClick={() => { setAuthor(''); setSpecies(''); setRating(5); setMessage('')}} className="px-3 py-2 rounded border">Reset</button>
       </div>
     </form>
   )

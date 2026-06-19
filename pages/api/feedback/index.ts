@@ -1,9 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../../lib/mongodb'
 import Feedback from '../../../models/FeedbackModel'
-import fs from 'fs'
-import path from 'path'
-import { v2 as cloudinary } from 'cloudinary'
 import { sampleFeedback } from '../../../lib/sampleData'
 
 export const config = {
@@ -12,23 +9,6 @@ export const config = {
       sizeLimit: '20mb',
     },
   },
-}
-
-if (process.env.CLOUDINARY_URL) {
-  cloudinary.config({ secure: true })
-}
-
-async function saveImageLocally(dataUrl: string, index: number) {
-  const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
-  if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true })
-  const matches = dataUrl.match(/^data:(image\/\w+);base64,(.+)$/)
-  if (!matches) return null
-  const ext = matches[1].split('/')[1]
-  const base64 = matches[2]
-  const filename = `${Date.now()}-${index}.${ext}`
-  const filepath = path.join(uploadsDir, filename)
-  fs.writeFileSync(filepath, Buffer.from(base64, 'base64'))
-  return `/uploads/${filename}`
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -61,32 +41,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === 'POST') {
-    const { author, animalId, animalName, species, rating, message, images } = req.body as {
+    const { author, animalId, animalName, species, rating, message } = req.body as {
       author: string
       animalId?: string
       animalName?: string
       species: string
       rating: number
       message: string
-      images: string[]
-    }
-
-    const savedImageUrls: string[] = []
-    if (Array.isArray(images)) {
-      for (let i = 0; i < images.length; i++) {
-        const img = images[i]
-        if (process.env.CLOUDINARY_URL) {
-          try {
-            const result = await cloudinary.uploader.upload(img, { folder: 'animal-feedback' })
-            savedImageUrls.push(result.secure_url)
-            continue
-          } catch (e) {
-            // fallback to local
-          }
-        }
-        const local = await saveImageLocally(img, i)
-        if (local) savedImageUrls.push(local)
-      }
     }
 
     const feedbackPayload = {
@@ -96,7 +57,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       species: species || 'Unknown',
       rating: rating || 0,
       message: message || '',
-      images: savedImageUrls,
       createdAt: new Date().toISOString(),
     }
 
