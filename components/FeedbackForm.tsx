@@ -63,8 +63,6 @@ function CelebrationOverlay() {
     </motion.div>
   )
 }
-import { mutate } from 'swr'
-
 export default function FeedbackForm({ animal }: { animal?: Animal } = {}) {
   const [author, setAuthor] = useState('')
   const [species, setSpecies] = useState(animal?.name ?? '')
