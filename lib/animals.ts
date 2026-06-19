@@ -1,0 +1,120 @@
+export type Animal = {
+  id: string
+  name: string
+  scientificName: string
+  category: string
+  habitat: string
+  imageUrl: string
+  description: string
+}
+
+export const animals: Animal[] = [
+  {
+    id: 'elephant',
+    name: 'African Elephant',
+    scientificName: 'Loxodonta africana',
+    category: 'Mammal',
+    habitat: 'Savannah, forest, desert edges',
+    imageUrl: 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=80',
+    description: 'The largest land animal with a gentle presence and powerful trunk movements.',
+  },
+  {
+    id: 'fox',
+    name: 'Red Fox',
+    scientificName: 'Vulpes vulpes',
+    category: 'Mammal',
+    habitat: 'Forests, grasslands, mountains',
+    imageUrl: 'https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=900&q=80',
+    description: 'A clever and beautiful animal with a rich orange coat and sharp senses.',
+  },
+  {
+    id: 'giraffe',
+    name: 'Giraffe',
+    scientificName: 'Giraffa camelopardalis',
+    category: 'Mammal',
+    habitat: 'Savannah and open woodlands',
+    imageUrl: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=900&q=80',
+    description: 'A graceful giant with a long neck and striking patterned coat.',
+  },
+  {
+    id: 'tiger',
+    name: 'Bengal Tiger',
+    scientificName: 'Panthera tigris tigris',
+    category: 'Mammal',
+    habitat: 'Tropical forests and grasslands',
+    imageUrl: 'https://images.unsplash.com/photo-1511974035430-5de47d3b95da?auto=format&fit=crop&w=900&q=80',
+    description: 'A majestic predator known for its rich orange fur and bold stripes.',
+  },
+  {
+    id: 'parrot',
+    name: 'Macaw Parrot',
+    scientificName: 'Ara macao',
+    category: 'Bird',
+    habitat: 'Rainforests and tropical regions',
+    imageUrl: 'https://images.unsplash.com/photo-1501706362039-c6e8d46ae936?auto=format&fit=crop&w=900&q=80',
+    description: 'A colorful, intelligent bird with a loud call and brilliant wings.',
+  },
+  {
+    id: 'penguin',
+    name: 'Emperor Penguin',
+    scientificName: 'Aptenodytes forsteri',
+    category: 'Bird',
+    habitat: 'Antarctic ice shelves',
+    imageUrl: 'https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=900&q=80',
+    description: 'A sturdy and charming bird that thrives in the coldest climate on earth.',
+  },
+  {
+    id: 'panda',
+    name: 'Giant Panda',
+    scientificName: 'Ailuropoda melanoleuca',
+    category: 'Mammal',
+    habitat: 'Bamboo forests',
+    imageUrl: 'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?auto=format&fit=crop&w=900&q=80',
+    description: 'A rare bear known for its gentle nature and iconic black-and-white fur.',
+  },
+  {
+    id: 'koala',
+    name: 'Koala',
+    scientificName: 'Phascolarctos cinereus',
+    category: 'Mammal',
+    habitat: 'Eucalyptus forests',
+    imageUrl: 'https://images.unsplash.com/photo-1535914254981-b5012e7b9a10?auto=format&fit=crop&w=900&q=80',
+    description: 'A sleepy tree-dweller that feeds almost exclusively on eucalyptus leaves.',
+  },
+  {
+    id: 'wolf',
+    name: 'Grey Wolf',
+    scientificName: 'Canis lupus',
+    category: 'Mammal',
+    habitat: 'Forests and tundras',
+    imageUrl: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80',
+    description: 'A highly social and intelligent hunter moving in tight family packs.',
+  },
+  {
+    id: 'lion',
+    name: 'African Lion',
+    scientificName: 'Panthera leo',
+    category: 'Mammal',
+    habitat: 'Grasslands and savannahs',
+    imageUrl: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&q=80',
+    description: 'The king of the savannah, famous for its mane and majestic presence.',
+  },
+  {
+    id: 'dolphin',
+    name: 'Bottlenose Dolphin',
+    scientificName: 'Tursiops truncatus',
+    category: 'Marine',
+    habitat: 'Coastal and offshore waters',
+    imageUrl: 'https://images.unsplash.com/photo-1511415513176-9dc3ed5b58c2?auto=format&fit=crop&w=900&q=80',
+    description: 'A playful and social marine mammal known for its high intelligence.',
+  },
+  {
+    id: 'owl',
+    name: 'Barn Owl',
+    scientificName: 'Tyto alba',
+    category: 'Bird',
+    habitat: 'Farmlands and woodlands',
+    imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=80',
+    description: 'A nocturnal bird with distinctive facial discs and silent flight.',
+  },
+]

@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Animal Feedback — Frontend (Local-first)
 
-## Getting Started
+This repository contains a frontend-first Next.js + TypeScript scaffold for the Animal Feedback webapp. It uses Tailwind for styling and a simple localStorage-backed adapter so you can submit feedback with attached animal images (stored as data URLs) without a backend.
 
-First, run the development server:
+Quick start
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Run dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Notes
+- By default the app will attempt to use a MongoDB instance. Set `MONGODB_URI` in your environment to enable persistence.
+- Image attachments are accepted as data URLs and will be uploaded server-side. If you set `CLOUDINARY_URL` the server will upload images to Cloudinary; otherwise images are saved to `public/uploads`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Environment variables
+- `MONGODB_URI` — MongoDB connection string (optional for demo; without it the app will still run but DB operations will be skipped).
+- `CLOUDINARY_URL` — (optional) Cloudinary connection string for hosted image storage.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Local dev tips
+- After installing, run:
 
-## Learn More
+```bash
+npm install
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open `http://localhost:3000` and submit feedback. Uploaded images will be stored under `public/uploads` unless Cloudinary is configured.
